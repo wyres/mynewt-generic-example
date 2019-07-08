@@ -1,0 +1,134 @@
+#
+# Wyres
+#
+
+syscfg.defs:
+
+    L96_0_NAME:
+        description: "device number for L96 first device"
+        value: '"L96_0"'
+    L96_0_I2C_CHAN:
+        description: "I2C channel for GPS module L96"
+        value: 0
+    L96_0_I2C_ADDR:
+        description: "I2C id for GPS module L96"
+        value: 92
+        
+    GPS_PWRIO:
+        description: "gpio pin to enable power on GPS - I2C bus (12)"
+        value: EXT_I2C_PWR     
+    GPS_UART:
+        description: "UART Socket device name to open to talk to GPS (from BSP)"
+        value: 'UART0_DEV'
+    GPS_UART_BAUDRATE:
+        description: "baudrate for uart to use to talk to GPS"
+        value: 9600
+    GPS_ACTIVE_LED:
+        description: "LED to signal GPS is active"
+        value: LED_1
+    GPS_ACTIVE_SEARCH_LED_PATTERN:
+        description: "LED flash pattern for GPS active, searching for position"
+        value: "1000000000"
+    GPS_ACTIVE_LOCKED_LED_PATTERN:
+        description: "LED flash pattern for GPS active, locked on a position"
+        value: "1010101010"
+    GPS_UART_SELECT:
+        description: "code for uart switcher for GPS module: extio=1, spkr=0 (BUT SPKR VALUE IS INVERTED)"
+        value: 3
+
+    WIFO_PWRIO:
+        description: "gpio pin to enable power on wifi (11)"
+        value: EXT_UART_PWR
+    WIFI_UART:
+        description: "uart socket device name to use to talk to ESP32  (from BSP)"
+        value: 'UART0_DEV'
+    WIFI_UART_BAUDRATE:
+        description: "baudrate for uart to use to talk to ESP32"
+        value: 19200
+    WIFI_SCAN_LED:
+        description: "LED to signal WIFI is active"
+        value: LED_2        #15 # PA15 - LED2 from BSP??
+    WIFI_SCAN_PATTERN:
+        description: "LED flash pattern for wifi scan"
+        value: "1000010000"
+
+    BLE_PWRIO:
+        description: "gpio pin to enable power on ble module (11)"
+        value: EXT_UART_PWR
+    BLE_UART:
+        description: "uart socket device name to use to talk to ble module  (from BSP)"
+        value: 'UART0_DEV'
+    BLE_UART_BAUDRATE:
+        description: "baudrate for uart to use to talk to BLE module"
+        value: 115200
+    BLE_UART_SELECT:
+        description: "code for uart switcher for BLE module: extio=1, spkr=1 (BUT SPKR INVERTED)"
+        value: 1
+    BLE_SCAN_LED:
+        description: "LED to signal BLE is active"
+        value: LED_2
+    BLE_SCAN_PATTERN:
+        description: "LED flash pattern for BLE scan"
+        value: "1010101010"
+
+    HIZ_UART_SELECT:
+        description: "code for uart switcher for hiZ: extio=0, spkr=0 (BUT SPKR INVERTED)"
+        value: 2
+    EXT_UART_SELECT:
+        description: "code for uart switcher for ext uart connector: extio=0, spkr=1 (BUT SPKR INVERTED)"
+        value: 0
+
+    UNITTEST:
+        description: "enable unittest execution in main"
+        value: 0
+        
+syscfg.vals:
+    #only use console on uart0 if no daughter card
+    CONSOLE_UART: 0
+    # how to configure a string in these defines? or should it just be "0"? anyway uart0 is default...
+    CONSOLE_UART_DEV: 'UART0_DEV'
+    CONSOLE_UART_BAUD: 19200
+    CONSOLE_UART_TX_BUF_SIZE: 256
+
+    #  enable debug uart if reqd for logs
+    UART_DBG: 1
+    UART_DBG_BAUD: 19200
+    UART_DBG_TX: EXT_BUTTON
+    # using the debug bitbang uart device
+    LOG_UART: 'UARTDBG_DEV'
+    LOG_UART_BAUDRATE: 19200
+    LOG_UART_SELECT: -1
+
+    # if using a daughter card with a uart selector set control pins
+    UART_SELECT0: EXT_IO
+    UART_SELECT1: SPEAKER
+        
+    # some issues around the bus driver architecture with STM32 it seems
+    USE_BUS_I2C: 0
+
+    # check stack overflows during debug
+    OS_CTX_SW_STACK_CHECK: 1
+
+    #lora wan
+    LORAWAN_REGION_EU868: 1
+    LORAWAN_SE_SOFT: 1
+    LORAWAN_API_TRACE_ACTIVATION: 0
+    LORAWAN_API_DEFAULT_DR: 3
+    SX127X_RADIO_WAKEUP_TIME: 10
+    SX127X_RADIO_MIN_RX_DURATION: 600
+
+    # redefined here so can compare with app task prios above
+    SM_TASK_PRIO: 199
+    L96COMM_TASK_PRIO: 103
+    LORAAPP_TASK_PRIO: 102  # must be lower pri that LORAWAN tasks
+    WBLE_TASK_PRIO: 101
+    GPS_TASK_PRIO: 100
+    LEDMGR_TASK_PRIO: 19
+    LORAWAN_TASK_PRIO: 10
+    LORAWAN_API_TASK_PRIO: 11
+    WATCHDOG_TASK_PRIO: 9
+
+    # hook reboot and assert operations in mynewt OS
+#    HAL_SYSTEM_RESET_CB: wreboot_cb
+#    OS_ASSERT_CB: wassert_fn_cb
+#    OS_ASSERT_FN_NAME: wassert_fn_cb

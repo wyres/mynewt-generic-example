@@ -1,0 +1,3 @@
+syscfg.vals: 
+    #using a stlink with openocd on W10
+    OPENOCD_STLINK_WINDOWS: 1

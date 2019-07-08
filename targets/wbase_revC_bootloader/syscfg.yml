@@ -1,0 +1,11 @@
+syscfg.vals: 
+    #using a stlink with openocd on W10
+    OPENOCD_STLINK_WINDOWS: 1
+
+    # turn off stuff not required in bootloader!
+#    TIMER_0: 0
+#    TIMER_1: 0
+#    TIMER_2: 0
+#    I2C_0: 0
+#    SPI_0_MASTER: 0
+#    RTC: 0
